@@ -1,0 +1,10 @@
+C:\Users\iron_\OneDrive\Documentos\Octavo Semestre\Control Automático\RobotSeguidor\RobotSeguidor\bin\Debug\RobotSeguidor.exe.config
+C:\Users\iron_\OneDrive\Documentos\Octavo Semestre\Control Automático\RobotSeguidor\RobotSeguidor\bin\Debug\RobotSeguidor.exe
+C:\Users\iron_\OneDrive\Documentos\Octavo Semestre\Control Automático\RobotSeguidor\RobotSeguidor\bin\Debug\RobotSeguidor.pdb
+C:\Users\iron_\OneDrive\Documentos\Octavo Semestre\Control Automático\RobotSeguidor\RobotSeguidor\obj\Debug\RobotSeguidor.csprojResolveAssemblyReference.cache
+C:\Users\iron_\OneDrive\Documentos\Octavo Semestre\Control Automático\RobotSeguidor\RobotSeguidor\obj\Debug\RobotSeguidor.Form1.resources
+C:\Users\iron_\OneDrive\Documentos\Octavo Semestre\Control Automático\RobotSeguidor\RobotSeguidor\obj\Debug\RobotSeguidor.Properties.Resources.resources
+C:\Users\iron_\OneDrive\Documentos\Octavo Semestre\Control Automático\RobotSeguidor\RobotSeguidor\obj\Debug\RobotSeguidor.csproj.GenerateResource.Cache
+C:\Users\iron_\OneDrive\Documentos\Octavo Semestre\Control Automático\RobotSeguidor\RobotSeguidor\obj\Debug\RobotSeguidor.exe
+C:\Users\iron_\OneDrive\Documentos\Octavo Semestre\Control Automático\RobotSeguidor\RobotSeguidor\obj\Debug\RobotSeguidor.pdb
+C:\Users\iron_\OneDrive\Documentos\Octavo Semestre\Control Automático\RobotSeguidor\RobotSeguidor\obj\Debug\RobotSeguidor.DataWindow.resources
