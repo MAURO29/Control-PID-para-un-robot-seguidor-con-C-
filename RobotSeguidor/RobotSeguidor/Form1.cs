@@ -10,6 +10,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows.Forms.VisualStyles;
+using System.Windows.Forms.DataVisualization.Charting;
+using rtChart;
 
 namespace RobotSeguidor
 {
@@ -17,52 +19,78 @@ namespace RobotSeguidor
     public partial class Form1 : Form
     {
         #region Variables, Objetos, Propiedades y Delegados
-        private string Bufferint;
-        private int contador;
+        //delegados
+        private delegate void ChangeContentLabelDelegate(string data);
+        private delegate void UpdateGraph(double data1, double data2);
+        //Forms
         private DataWindow dataWindow;
-        private double distanceHCSR04;
-        private double disiredDistance;
-        private double dataHCSR04;
-        private double eP;
-        private double eI;
-        private double kP;
-        private double kI;
-        private double kproporcional;
-        private double olddateInt;
-        private double PromHCSR04;
-        private double pwmPID;
-        private double sumHCSR04;
-        private double sumEint;
-        delegate void ChangeContentLabelDelegate(string data);
-        public double KI { get => kI; set => kI = value; }
-        public double KP { get => kP; set => kP = value; }
+        private Grafica graphicDistance;
+        //Propiedades
+        public double Ed { get; private set; }
+        public double Ep { get; private set; }
+        public double Ei { get; private set; }
+        public double Kp { get; private set; }
+        public double Kd { get; private set; }
+        public double Ki { get; private set; }
+        public double DisiredDistance { get; set; }
+        //Variables
+        private string _bufferint;
+        private int _contador;
+        private double _data1;
+        private double _distanceHcsr04;
+        private double _dataHcsr04;
+        private double _dataoldHcsr04;
+        private double _kpaux;
+        private double _kiaux;
+        private double _kdaux;
+        private double _olddataInt;
+        private double _promHcsr04;
+        private double _promTime;
+        private double _pwmPid;
+        private double _sumHcsr04;
+        private double _sumEint;
+        private double _sumTime;
+        private double _time;
+        private int i = 0;
         #endregion
 
+        /// <summary>
+        /// Inicializando variables
+        /// </summary>
         public Form1()
         {
             InitializeComponent();
-            Bufferint = "";
-            distanceHCSR04 = 0;
-            disiredDistance = 20;
-            dataHCSR04 = 0;
-            eP = 0;
-            eI = 0;
-            KI = 0;
-            KP = 0;
-            kproporcional = 0;
-            sumHCSR04 = 0;
-            PromHCSR04 = 0;
-            pwmPID = 0;
-            contador = 0;
             dataWindow = new DataWindow();
-            DataToolStripMenuItem.Enabled = false;
+            graphicDistance = new Grafica();
             btnConnect.Enabled = false;
             cbxPorts.Enabled = false;
             cbxrangeBaud.Enabled = false;
+            DataToolStripMenuItem.Enabled = false;
+            graficarToolStripMenuItem.Enabled = false;
             iniciarToolStripMenuItem.Enabled = true;
             salirToolStripMenuItem.Enabled = false;
+            _contador = 0;
+            _distanceHcsr04 = 0;
+            DisiredDistance = 20;
+            _dataHcsr04 = 0;
+            _dataoldHcsr04 = 0;
+            Ep = 0;
+            Ei = 0;
+            Ki = 0;
+            Kp = 0;
+            _promHcsr04 = 0;
+            _promTime = 0;
+            _pwmPid = 0;
+            _sumHcsr04 = 0;
+            _sumTime = 0;
+            _time = 0;  
         }
 
+        /// <summary>
+        /// Buscador de puertos seriales disponibles y activando controles del menú gráfico
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void iniciarToolStripMenuItem_Click(object sender, EventArgs e)
         {
             string[] puertos = SerialPort.GetPortNames();
@@ -81,6 +109,11 @@ namespace RobotSeguidor
             salirToolStripMenuItem.Enabled = true;
         }
 
+        /// <summary>
+        /// Botón que permite la conexión y desconexión del puerto serial
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnConnect_Click(object sender, EventArgs e)
         {
             try
@@ -93,7 +126,7 @@ namespace RobotSeguidor
                     serialPort1.StopBits = StopBits.One;
                     serialPort1.Parity = Parity.None;
                     serialPort1.Handshake = Handshake.None;
-                    serialPort1.PortName = cbxPorts.Items[0].ToString();
+                    serialPort1.PortName = cbxPorts.Text;
 
                     //---------------abriendo puerto serial-------------------------
 
@@ -104,18 +137,16 @@ namespace RobotSeguidor
                         btnConnect.BackColor = Color.Red;
                         menuStrip1.BackColor = Color.Red;
                         lbStateConections.Text = "Conexión Exitosa";
-                        DataToolStripMenuItem.Enabled = true;
                         cbxPorts.Enabled = false;
                         cbxrangeBaud.Enabled = false;
+                        DataToolStripMenuItem.Enabled = true;
+                        graficarToolStripMenuItem.Enabled = true;
                     }
                     catch (Exception exception)
                     {
                         MessageBox.Show(exception.Message);
                         lbStateConections.Text = "Conexión fallida.";
-                    }
-                   
-                    
-
+                    }  
                 }
                 else if (btnConnect.Text == "Desconectar")
                 {
@@ -129,16 +160,17 @@ namespace RobotSeguidor
                         serialPort1.Dispose();
                         serialPort1.Close();
                         lbStateConections.Text = "Conección Terminada.";
-                        dataWindow.Visible = false;
                         cbxPorts.Enabled = true;
                         cbxrangeBaud.Enabled = true;
+                        dataWindow.Visible = false;
+                        graphicDistance.Visible = false;
+                        DataToolStripMenuItem.Enabled = false;
+                        graficarToolStripMenuItem.Enabled = false;    
                     }
                     catch (Exception exception)
                     {
                         MessageBox.Show(exception.Message);
                     }
-                    
-
                 }
             }
             catch (Exception exception)
@@ -147,70 +179,87 @@ namespace RobotSeguidor
             }
         }
 
+        /// <summary>
+        /// Muestra la ventada de datos al hacer click en la pestaña desplegar datos
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void DataToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            dataWindow.Visible = true;
+            dataWindow.Visible = true;   
         }
 
+        /// <summary>
+        /// Finaliza la aplicación en curso
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void salirToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (serialPort1.IsOpen)
             {
-                MessageBox.Show("La conexión serial sigue activa.");
+                MessageBox.Show("La conexión serial sigue activa.");  //Revisa que la conexión este cerrada para cerrar la aplicación
             }
             else
             {
-                this.Dispose();
+                this.Dispose();  //Finaliza la aplicación
             }
         }
 
         /// <summary>
-        /// Recepción de datos del arduino
+        /// Recepción de datos del puerto serial enviados por arduino
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void serialPort1_DataReceived(object sender, SerialDataReceivedEventArgs e)
         {
             //-------------------------Recepción de datos del arduino------------------------------
-            Bufferint = serialPort1.ReadLine();
-            int data = 0;
-            bool valnum = int.TryParse(Bufferint, out data);
+            _bufferint = serialPort1.ReadLine();
+            
+            //-------------Convirtiendo valores recibidos a datos tipo double------------------
 
-            //-------------------Muestreo de datos para filtrar errores de medición----------------
-                if (valnum)
-                {
-                    dataHCSR04 = Convert.ToDouble(Bufferint);
-                    ErrorIntegral(dataHCSR04);
-                    sumHCSR04 = sumHCSR04 + dataHCSR04;
-                    contador++;
-                }
+            bool valnum1 = double.TryParse(_bufferint, out _data1);
+
+            //-------------------Muestreo de datos para filtrar errores de medición-------------
+
+            if (valnum1 )  // Validando que el dato recibido sea un número
+            {
+                _dataHcsr04 = _data1;
+                ErrorIntegral(_dataHcsr04 * 0.017);
+                _sumHcsr04 = _sumHcsr04 + _dataHcsr04;
+                _contador++;
+            }
 
             //--------------Promediando datos del muestreo y calculando distancias------------------
-            if (contador == 9)
-            {            
-                PromHCSR04 = sumHCSR04 / 10;
-                contador = 0;
-                sumHCSR04 = 0;
 
-                distanceHCSR04 = PromHCSR04 * 0.017;
+            if (_contador == 29)
+            {
+                _promHcsr04 = _sumHcsr04 / 30;
+                _contador = 0;
+                _sumHcsr04 = 0;
+                _sumTime = 0;
+
+                _distanceHcsr04 = _promHcsr04 * 0.017;
+                ErrorProporcional(_distanceHcsr04);
+                ErrorDerivativo(_distanceHcsr04);
 
                 //-------------Mandando distancia sensada por el sensor al monitor------------------
-                if (distanceHCSR04 >= 2)
-                {
-                    BufferContentHCSR04(Math.Round(distanceHCSR04, 1).ToString());
-                    BufferOutEp(eP.ToString());
-                    BufferOutEint(eI.ToString());
-                    BufferOutPWM(pwmPID.ToString());
-                }
-                else
-                {
-                    BufferContentHCSR04("");
-                    BufferOutEp("");
-                    BufferOutEint("");
-                }
 
-                //-----------------Envio de datos al arduino-----------------------------------------
-                serialPort1_SenddataProportional(distanceHCSR04);
+                BufferContentHcsr04(Math.Round(_distanceHcsr04, 1).ToString());
+                BufferOutEp(Ep.ToString());
+                BufferOutEint(Ei.ToString());
+                BufferOutEderiv(Ed.ToString());
+                BufferOutPwm(_pwmPid.ToString());
+                  
+                //-----------------Envio de datos al arduino y graficación---------------------------
+                serialPort1_SenddataProportional(_distanceHcsr04);
+                Updategraph(i++, _distanceHcsr04); 
+                serialPort1.DiscardInBuffer();
+
+                if (i>100)
+                {
+                    i = 0;
+                }
             }
         }
 
@@ -220,24 +269,36 @@ namespace RobotSeguidor
         /// <param name="distance"></param>
         private void serialPort1_SenddataProportional(double distance)
         {
-            KP = dataWindow.Kpdata;
-            eP = distance - disiredDistance;
-            pwmPID = KP * eP + eI*KI;
+            _pwmPid = Kp * Ep + Ki * Ei + Kd * Ed;
 
-            serialPort1.WriteLine(pwmPID.ToString());
+            if (_pwmPid > 15 && _pwmPid < 30)
+            {
+                _pwmPid = 41; //Saturando el pwm enviado al controlador 
+                serialPort1.WriteLine(_pwmPid.ToString());
+            }
+            else if (_pwmPid < -15 && _pwmPid > -30)
+            {
+                _pwmPid = -41; //Saturando el pwm enviado al controlador
+                serialPort1.WriteLine(_pwmPid.ToString());
+            }
+            else
+            {
+                serialPort1.WriteLine(_pwmPid.ToString());
+            }
+
+            serialPort1.DiscardOutBuffer();
         }
     
         /// <summary>
-        /// Ejecutando llamadas seguras a subprocesos para modificar elementos del 
-        /// formulario SensoresFrontales.
+        /// Llamada segura para desplegar distancia sensador por el HCSR04
         /// </summary>
         /// <param name="data"></param>
-        private void BufferContentHCSR04(string data)
+        private void BufferContentHcsr04(string data)
         {
             if (this.dataWindow.lbDistanceHCSR04.InvokeRequired)
             {
-                ChangeContentLabelDelegate CurrentContentHCSR04 = new ChangeContentLabelDelegate(BufferContentHCSR04);
-                this.Invoke(CurrentContentHCSR04, new object[] { data });
+                var currentContentHcsr04 = new ChangeContentLabelDelegate(BufferContentHcsr04);
+                this.Invoke(currentContentHcsr04, new object[] { data });
             }
             else
             {
@@ -253,8 +314,8 @@ namespace RobotSeguidor
         {
             if (this.dataWindow.Eplb.InvokeRequired)
             {
-                ChangeContentLabelDelegate CurrentContentEp = new ChangeContentLabelDelegate(BufferOutEp);
-                this.Invoke(CurrentContentEp, new object[] {data});
+                var currentContentEp = new ChangeContentLabelDelegate(BufferOutEp);
+                this.Invoke(currentContentEp, new object[] {data});
             }
             else
             {
@@ -270,8 +331,8 @@ namespace RobotSeguidor
         {
             if (this.dataWindow.Eilb.InvokeRequired)
             {
-                ChangeContentLabelDelegate CurrentContentEint = new ChangeContentLabelDelegate(BufferOutEint);
-                this.Invoke(CurrentContentEint, new object[] { data });
+                var currentContentEint = new ChangeContentLabelDelegate(BufferOutEint);
+                this.Invoke(currentContentEint, new object[] { data });
             }
             else
             {
@@ -287,8 +348,8 @@ namespace RobotSeguidor
         {
             if (this.dataWindow.Edlb.InvokeRequired)
             {
-                ChangeContentLabelDelegate CurrentContentEderiv = new ChangeContentLabelDelegate(BufferOutEderiv);
-                this.Invoke(CurrentContentEderiv, new object[] { data });
+                var currentContentEderiv = new ChangeContentLabelDelegate(BufferOutEderiv);
+                this.Invoke(currentContentEderiv, new object[] { data });
             }
             else
             {
@@ -301,12 +362,12 @@ namespace RobotSeguidor
         /// de los errores calculados
         /// </summary>
         /// <param name="data"></param>
-        private void BufferOutPWM(string data)
+        private void BufferOutPwm(string data)
         {
             if (this.dataWindow.PWMlb.InvokeRequired)
             {
-                ChangeContentLabelDelegate CurrentContentPWM = new ChangeContentLabelDelegate(BufferOutPWM);
-                this.Invoke(CurrentContentPWM, new object[] {data});
+                var currentContentPwm = new ChangeContentLabelDelegate(BufferOutPwm);
+                this.Invoke(currentContentPwm, new object[] {data});
             }
             else
             {
@@ -314,20 +375,112 @@ namespace RobotSeguidor
             }
         }
 
-        private async void ErrorIntegral(double data)
+        /// <summary>
+        /// Cálculo del error proporcional
+        /// </summary>
+        /// <param name="data"></param>
+        private async void ErrorProporcional(double data)
         {
-            eI = await Task.Run(() => calculoIntegral(dataHCSR04));
-            KI = dataWindow.Kidata;
+            Ep = await Task.Run(()=> data - DisiredDistance);
+            Kp = dataWindow.Kpdata;
             
+            if (Math.Abs(Kp - _kpaux) > 0)
+            {
+                Ep = 0;
+            }
+
+            _kpaux = Kp;
         }
 
-        private double calculoIntegral(double distance)
+        /// <summary>
+        /// Cálculo del error integral
+        /// </summary>
+        /// <param name="data"></param>
+        private async void ErrorIntegral(double data)
         {
-            double TiempoMuestreo = 0.012;
-            double sum = (dataHCSR04-olddateInt) * TiempoMuestreo;
-            olddateInt = distance;
-            return sumEint += sum;
+            Ei = await Task.Run(() => PromedioIntegral(_dataHcsr04));
+            Ki = dataWindow.Kidata;
+
+            if (Math.Abs(Ki - _kiaux) > 0)
+            {
+                Ei = 0;
+            }
+
+            _kiaux = Ki;
         }
-        
+
+        /// <summary>
+        /// Calculo del error derivativo
+        /// </summary>
+        /// <param name="data"></param>
+        private async void ErrorDerivativo(double data)
+        {
+            Ed = await Task.Run(() => CalculoDerivativo(_dataHcsr04));
+            Kd = dataWindow.Kddata;
+        }
+
+        /// <summary>
+        /// Cálcula el promedio de los datos recibidos por el microcontrolador
+        /// </summary>
+        /// <param name="distance"></param>
+        /// <returns></returns>
+        private double PromedioIntegral(double distance)
+        {
+            var sum = Math.Round((_dataHcsr04 - _olddataInt) * 0.012, 1) ;
+            _olddataInt = distance;
+            if (Math.Abs(distance) < 0)
+            {
+                _sumEint = 0;
+            }
+           
+            return _sumEint += sum;
+        }
+
+        /// <summary>
+        /// Cálculo derivativo
+        /// </summary>
+        /// <param name="distances"></param>
+        /// <returns></returns>
+        private double CalculoDerivativo(double distances)
+        {
+            var diferencia = Math.Round((distances - _dataoldHcsr04) / 0.012, 1) ;
+            _dataoldHcsr04 = distances;
+            return diferencia;
+        }
+
+        /// <summary>
+        /// Muestra la gráfica al hacer click en la pestaña Graficar
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void graficarToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            graphicDistance.Visible = true;
+        }
+
+        /// <summary>
+        /// Llamada segura a control para modificar la grafica desde el form principal
+        /// </summary>
+        /// <param name="data1"></param>
+        /// <param name="data2"></param>
+        private void Updategraph(double data1, double data2)
+        {
+            if (this.graphicDistance.Graphic.InvokeRequired)
+            {
+                var updatedata = new UpdateGraph(Updategraph);
+                this.Invoke(updatedata, new object[] { data1, data2});
+            }
+            else
+            {
+                graphicDistance.Graphic.Series[0].Points.AddXY(data1, data2);
+                graphicDistance.Graphic.Series[1].Points.AddXY(data1, 20);
+
+                if (data1 == 100 )
+                {
+                    graphicDistance.Graphic.Series[0].Points.Clear();
+                    graphicDistance.Graphic.Series[1].Points.Clear();
+                }
+            }
+        }
     }
 }

@@ -8,3 +8,5 @@ C:\Users\iron_\OneDrive\Documentos\Octavo Semestre\Control Automático\RobotSegu
 C:\Users\iron_\OneDrive\Documentos\Octavo Semestre\Control Automático\RobotSeguidor\RobotSeguidor\obj\Debug\RobotSeguidor.exe
 C:\Users\iron_\OneDrive\Documentos\Octavo Semestre\Control Automático\RobotSeguidor\RobotSeguidor\obj\Debug\RobotSeguidor.pdb
 C:\Users\iron_\OneDrive\Documentos\Octavo Semestre\Control Automático\RobotSeguidor\RobotSeguidor\obj\Debug\RobotSeguidor.DataWindow.resources
+C:\Users\iron_\OneDrive\Documentos\Octavo Semestre\Control Automático\RobotSeguidor\RobotSeguidor\obj\Debug\RobotSeguidor.Grafica.resources
+C:\Users\iron_\OneDrive\Documentos\Octavo Semestre\Control Automático\RobotSeguidor\RobotSeguidor\bin\Debug\kayChart.dll

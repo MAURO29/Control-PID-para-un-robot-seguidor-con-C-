@@ -1,4 +1,4 @@
-//----------------Variables de señales de sensor HCRS04-----------------------------
+//----------------Variables de señales de sensor HC-SR04-----------------------------
 int trigger = 13;
 int echo = 12;
 
@@ -6,6 +6,7 @@ int echo = 12;
 int enable1 = 10;
 int int1 = 9;
 int int2 = 8;
+double timenow = 0;
 double pwm = 0;
 
 //-----------------------------Datos a enviar a C#---------------------------------
@@ -74,11 +75,13 @@ void turn(double pwm)
 void SentDatas(int timer)
 {
   String pack = String(timer);
+  
   Serial.println(pack); 
 }
 
 void Motor(double pwm)
 { 
-  analogWrite(enable1, abs(pwm)); 
+    analogWrite(enable1, abs(pwm));
+    Serial.flush(); 
 }
 

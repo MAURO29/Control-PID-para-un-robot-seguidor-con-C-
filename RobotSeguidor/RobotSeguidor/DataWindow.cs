@@ -55,6 +55,7 @@ namespace RobotSeguidor
                 if (e.KeyCode == Keys.Enter)
                 {
                     Kpdata = Convert.ToDouble(Kptxb.Text);
+                    kptxt.Text = Kpdata.ToString();
                     Kptxb.Clear();
                 }
             }
@@ -73,6 +74,7 @@ namespace RobotSeguidor
                 if (e.KeyCode == Keys.Enter)
                 {
                     Kidata = Convert.ToDouble(Kitxb.Text);
+                    kitxt.Text = kidata.ToString();
                     Kitxb.Clear();
                 }
             }
@@ -90,6 +92,7 @@ namespace RobotSeguidor
                 if (e.KeyCode == Keys.Enter)
                 {
                     Kddata = Convert.ToDouble(Kdtxb.Text);
+                    kdtxt.Text = kddata.ToString();
                     Kdtxb.Clear();
                 }
             }

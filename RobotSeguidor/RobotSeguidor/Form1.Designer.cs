@@ -36,6 +36,7 @@
             this.salirToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.vistasToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.DataToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.graficarToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.btnConnect = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.cbxPorts = new System.Windows.Forms.ComboBox();
@@ -87,7 +88,8 @@
             // vistasToolStripMenuItem
             // 
             this.vistasToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.DataToolStripMenuItem});
+            this.DataToolStripMenuItem,
+            this.graficarToolStripMenuItem});
             this.vistasToolStripMenuItem.Name = "vistasToolStripMenuItem";
             this.vistasToolStripMenuItem.Size = new System.Drawing.Size(158, 20);
             this.vistasToolStripMenuItem.Text = "Datos Sensados y Cálculos";
@@ -98,6 +100,13 @@
             this.DataToolStripMenuItem.Size = new System.Drawing.Size(194, 22);
             this.DataToolStripMenuItem.Text = "Desplegar información";
             this.DataToolStripMenuItem.Click += new System.EventHandler(this.DataToolStripMenuItem_Click);
+            // 
+            // graficarToolStripMenuItem
+            // 
+            this.graficarToolStripMenuItem.Name = "graficarToolStripMenuItem";
+            this.graficarToolStripMenuItem.Size = new System.Drawing.Size(194, 22);
+            this.graficarToolStripMenuItem.Text = "Graficar ";
+            this.graficarToolStripMenuItem.Click += new System.EventHandler(this.graficarToolStripMenuItem_Click);
             // 
             // btnConnect
             // 
@@ -133,7 +142,7 @@
             this.lbStateConections.AutoSize = true;
             this.lbStateConections.Font = new System.Drawing.Font("Modern No. 20", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lbStateConections.ForeColor = System.Drawing.Color.White;
-            this.lbStateConections.Location = new System.Drawing.Point(319, 439);
+            this.lbStateConections.Location = new System.Drawing.Point(296, 454);
             this.lbStateConections.Name = "lbStateConections";
             this.lbStateConections.Size = new System.Drawing.Size(0, 15);
             this.lbStateConections.TabIndex = 4;
@@ -182,6 +191,7 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.btnConnect);
             this.Controls.Add(this.menuStrip1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Location = new System.Drawing.Point(200, 250);
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "Form1";
@@ -209,6 +219,7 @@
         private System.Windows.Forms.Label lbStateConections;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.ComboBox cbxrangeBaud;
+        private System.Windows.Forms.ToolStripMenuItem graficarToolStripMenuItem;
     }
 }
 
