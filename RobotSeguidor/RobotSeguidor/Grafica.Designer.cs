@@ -1,6 +1,6 @@
 ﻿namespace RobotSeguidor
 {
-    partial class Grafica
+    partial class Graphic
     {
         /// <summary>
         /// Required designer variable.
@@ -28,52 +28,64 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            this.GraphicDistance = new System.Windows.Forms.DataVisualization.Charting.Chart();
-            ((System.ComponentModel.ISupportInitialize)(this.GraphicDistance)).BeginInit();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series3 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Series series4 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            this.graphicdatas = new System.Windows.Forms.DataVisualization.Charting.Chart();
+            ((System.ComponentModel.ISupportInitialize)(this.graphicdatas)).BeginInit();
             this.SuspendLayout();
             // 
-            // GraphicDistance
+            // graphicdatas
             // 
-            chartArea1.Name = "ChartArea1";
-            this.GraphicDistance.ChartAreas.Add(chartArea1);
-            legend1.Name = "Legend1";
-            this.GraphicDistance.Legends.Add(legend1);
-            this.GraphicDistance.Location = new System.Drawing.Point(0, 0);
-            this.GraphicDistance.Name = "GraphicDistance";
-            series1.ChartArea = "ChartArea1";
-            series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
-            series1.Legend = "Legend1";
-            series1.Name = "Series1";
-            series2.ChartArea = "ChartArea1";
-            series2.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
-            series2.Legend = "Legend1";
-            series2.Name = "Series2";
-            this.GraphicDistance.Series.Add(series1);
-            this.GraphicDistance.Series.Add(series2);
-            this.GraphicDistance.Size = new System.Drawing.Size(1067, 734);
-            this.GraphicDistance.TabIndex = 0;
-            this.GraphicDistance.Text = "chart1";
-            this.GraphicDistance.Visible = false;
+            this.graphicdatas.BackColor = System.Drawing.Color.Transparent;
+            this.graphicdatas.BackGradientStyle = System.Windows.Forms.DataVisualization.Charting.GradientStyle.DiagonalRight;
+            chartArea2.AxisX.Title = "Número de datos";
+            chartArea2.AxisX.TitleFont = new System.Drawing.Font("Modern No. 20", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            chartArea2.AxisY.Title = "Distancia";
+            chartArea2.AxisY.TitleFont = new System.Drawing.Font("Modern No. 20", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            chartArea2.BackColor = System.Drawing.SystemColors.ControlDarkDark;
+            chartArea2.Name = "ChartArea1";
+            this.graphicdatas.ChartAreas.Add(chartArea2);
+            legend2.BackColor = System.Drawing.Color.Transparent;
+            legend2.ForeColor = System.Drawing.Color.White;
+            legend2.Name = "Legend1";
+            this.graphicdatas.Legends.Add(legend2);
+            this.graphicdatas.Location = new System.Drawing.Point(0, 0);
+            this.graphicdatas.Name = "graphicdatas";
+            this.graphicdatas.Palette = System.Windows.Forms.DataVisualization.Charting.ChartColorPalette.Fire;
+            series3.ChartArea = "ChartArea1";
+            series3.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
+            series3.Legend = "Legend1";
+            series3.Name = "Distancia Medida";
+            series4.ChartArea = "ChartArea1";
+            series4.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
+            series4.Legend = "Legend1";
+            series4.Name = "Distancia Deseada";
+            this.graphicdatas.Series.Add(series3);
+            this.graphicdatas.Series.Add(series4);
+            this.graphicdatas.Size = new System.Drawing.Size(1064, 736);
+            this.graphicdatas.TabIndex = 0;
+            this.graphicdatas.Text = "chart1";
+            this.graphicdatas.Click += new System.EventHandler(this.chart1_Click);
             // 
-            // Grafica
+            // Graphic
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.Color.Black;
             this.ClientSize = new System.Drawing.Size(1065, 735);
-            this.Controls.Add(this.GraphicDistance);
-            this.Name = "Grafica";
+            this.Controls.Add(this.graphicdatas);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
+            this.Name = "Graphic";
             this.Text = "Grafica";
-            ((System.ComponentModel.ISupportInitialize)(this.GraphicDistance)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.graphicdatas)).EndInit();
             this.ResumeLayout(false);
 
         }
 
         #endregion
 
-        public System.Windows.Forms.DataVisualization.Charting.Chart GraphicDistance;
+        public System.Windows.Forms.DataVisualization.Charting.Chart graphicdatas;
     }
 }

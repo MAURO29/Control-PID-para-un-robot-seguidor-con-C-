@@ -37,13 +37,13 @@
             this.vistasToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.DataToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.graficarToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.generarExcelToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.btnConnect = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.cbxPorts = new System.Windows.Forms.ComboBox();
             this.lbStateConections = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.cbxrangeBaud = new System.Windows.Forms.ComboBox();
-            this.generarExcelToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -109,6 +109,13 @@
             this.graficarToolStripMenuItem.Size = new System.Drawing.Size(194, 22);
             this.graficarToolStripMenuItem.Text = "Graficar ";
             this.graficarToolStripMenuItem.Click += new System.EventHandler(this.graficarToolStripMenuItem_Click);
+            // 
+            // generarExcelToolStripMenuItem
+            // 
+            this.generarExcelToolStripMenuItem.Name = "generarExcelToolStripMenuItem";
+            this.generarExcelToolStripMenuItem.Size = new System.Drawing.Size(194, 22);
+            this.generarExcelToolStripMenuItem.Text = "Generar Excel";
+            this.generarExcelToolStripMenuItem.Click += new System.EventHandler(this.generarExcelToolStripMenuItem_Click);
             // 
             // btnConnect
             // 
@@ -179,13 +186,6 @@
             this.cbxrangeBaud.Name = "cbxrangeBaud";
             this.cbxrangeBaud.Size = new System.Drawing.Size(176, 21);
             this.cbxrangeBaud.TabIndex = 6;
-            // 
-            // generarExcelToolStripMenuItem
-            // 
-            this.generarExcelToolStripMenuItem.Name = "generarExcelToolStripMenuItem";
-            this.generarExcelToolStripMenuItem.Size = new System.Drawing.Size(194, 22);
-            this.generarExcelToolStripMenuItem.Text = "Generar Excel";
-            this.generarExcelToolStripMenuItem.Click += new System.EventHandler(this.generarExcelToolStripMenuItem_Click);
             // 
             // Form1
             // 

@@ -12,16 +12,25 @@ using System.Windows.Forms.DataVisualization.Charting;
 
 namespace RobotSeguidor
 {
-    public partial class Grafica : Form
+    public partial class Graphic : Form
     {
    
 
 
-        public Grafica()
+        public Graphic()
         {
             InitializeComponent();
             
         }
-        
+
+        private void GraphicDistance_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void chart1_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
