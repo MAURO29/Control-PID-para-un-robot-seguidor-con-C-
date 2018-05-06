@@ -14,14 +14,16 @@ namespace RobotSeguidor
 {
     public partial class Grafica : Form
     {
-   
+        private double distance;
+       
 
 
         public Grafica()
         {
             InitializeComponent();
-            
+          
         }
-        
+
+    
     }
 }

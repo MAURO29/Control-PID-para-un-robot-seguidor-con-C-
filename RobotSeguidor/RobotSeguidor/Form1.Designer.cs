@@ -43,6 +43,7 @@
             this.lbStateConections = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.cbxrangeBaud = new System.Windows.Forms.ComboBox();
+            this.generarExcelToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -89,7 +90,8 @@
             // 
             this.vistasToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.DataToolStripMenuItem,
-            this.graficarToolStripMenuItem});
+            this.graficarToolStripMenuItem,
+            this.generarExcelToolStripMenuItem});
             this.vistasToolStripMenuItem.Name = "vistasToolStripMenuItem";
             this.vistasToolStripMenuItem.Size = new System.Drawing.Size(158, 20);
             this.vistasToolStripMenuItem.Text = "Datos Sensados y Cálculos";
@@ -178,6 +180,13 @@
             this.cbxrangeBaud.Size = new System.Drawing.Size(176, 21);
             this.cbxrangeBaud.TabIndex = 6;
             // 
+            // generarExcelToolStripMenuItem
+            // 
+            this.generarExcelToolStripMenuItem.Name = "generarExcelToolStripMenuItem";
+            this.generarExcelToolStripMenuItem.Size = new System.Drawing.Size(194, 22);
+            this.generarExcelToolStripMenuItem.Text = "Generar Excel";
+            this.generarExcelToolStripMenuItem.Click += new System.EventHandler(this.generarExcelToolStripMenuItem_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -220,6 +229,7 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.ComboBox cbxrangeBaud;
         private System.Windows.Forms.ToolStripMenuItem graficarToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem generarExcelToolStripMenuItem;
     }
 }
 
